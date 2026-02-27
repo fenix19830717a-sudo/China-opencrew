@@ -159,6 +159,43 @@ Layer 2: KO-distilled abstract knowledge (principles / patterns / lessons learne
 
 ---
 
+## Enable A2A Closed-Loop
+
+> After deployment, each Agent replying independently ≠ Agents collaborating with each other.
+> A2A (Agent-to-Agent) closed-loop requires additional configuration and validation.
+
+### What is an A2A Closed-Loop?
+
+You give CTO a dev task in `#cto` → CTO automatically dispatches to Builder in `#build` → Builder executes in rounds within the thread → each round's progress is visible in Slack → CTO reports back to `#cto`. **You only need to watch Slack.**
+
+### Let Your Agent Handle A2A Setup
+
+Send this to your **Ops Agent** (in `#ops`), or any Agent:
+
+```
+Help me enable A2A closed-loop.
+
+Reference: read docs/A2A_SETUP_GUIDE.md in the repo
+
+Current state:
+- OpenCrew is deployed, each Agent replies normally in their channel
+- My Slack channels: #hq(CoS) #cto(CTO) #build(Builder)
+
+Follow the steps in A2A_SETUP_GUIDE.md:
+1. Check and complete A2A config in openclaw.json (agentToAgent.allow / maxPingPongTurns)
+2. Append A2A collaboration sections to CTO and Builder's AGENTS.md (minimal increment, don't rewrite)
+3. Run CTO→Builder closed-loop validation test
+4. Report results to me
+
+Do not touch my models / auth / gateway config — only make A2A-related changes.
+```
+
+### Manual setup?
+
+Full guide (with config examples and validation steps) → [A2A Setup Guide](docs/en/A2A_SETUP_GUIDE.md)
+
+---
+
 ## Documentation Guide
 
 ### For You (the User)
@@ -168,6 +205,7 @@ Layer 2: KO-distilled abstract knowledge (principles / patterns / lessons learne
 | **[Full Getting Started Guide](docs/en/GETTING_STARTED.md)** | Zero-to-running detailed steps + common issues | First-time deployment |
 | **[Core Concepts Deep Dive](docs/en/CONCEPTS.md)** | Complete explanation of Autonomy Ladder, QAPS, A2A, Knowledge Distillation | Want to deeply understand the system |
 | **[Architecture Design](docs/en/ARCHITECTURE.md)** | Three-layer architecture, design trade-offs, rationale | Want to understand design decisions |
+| **[A2A Setup Guide](docs/en/A2A_SETUP_GUIDE.md)** | A2A config, workspace patches, validation steps | Enable cross-agent collaboration |
 | **[Customization Guide](docs/en/CUSTOMIZATION.md)** | Add/remove/modify agents, swap domain experts | Want to adjust your team setup |
 | **[Known Issues](docs/en/KNOWN_ISSUES.md)** | Real system boundaries and current best practices | When you hit weird behavior |
 | **[The Journey](docs/en/JOURNEY.md)** | From one person's pain point to a virtual team | Want the backstory |

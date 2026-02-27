@@ -165,6 +165,43 @@ Layer 2: KO 提炼的抽象知识（原则 / 模式 / 踩坑记录）
 
 ---
 
+## 跑通 A2A 闭环
+
+> 部署完成后，每个 Agent 各自能回复消息 ≠ Agent 之间能协作。
+> A2A（Agent-to-Agent）闭环需要额外配置和验证。
+
+### 什么是 A2A 闭环？
+
+你在 `#cto` 给 CTO 一个开发任务 → CTO 自动在 `#build` 给 Builder 派单 → Builder 在 thread 里分轮执行 → 每轮进展在 Slack 可见 → CTO 回到 `#cto` 汇报结果。**全程你只需要看 Slack。**
+
+### 让你的 Agent 自动完成 A2A 设置
+
+把下面这段发给你的 **Ops Agent**（在 `#ops` 频道），或任何一个 Agent：
+
+```
+请帮我跑通 A2A 闭环。
+
+参考文档：请读仓库里的 docs/A2A_SETUP_GUIDE.md
+
+当前状态：
+- OpenCrew 已部署，各 Agent 在自己频道能正常回复
+- 我的 Slack 频道：#hq(CoS) #cto(CTO) #build(Builder)
+
+请按 A2A_SETUP_GUIDE.md 的步骤：
+1. 检查并补全 openclaw.json 中的 A2A 配置（agentToAgent.allow / maxPingPongTurns）
+2. 给 CTO 和 Builder 的 AGENTS.md 追加 A2A 协作 section（最小增量，不要重写）
+3. 执行 CTO→Builder 闭环验证测试
+4. 把结果汇报给我
+
+不要改我的 models / auth / gateway 其他配置，只做 A2A 相关的增量。
+```
+
+### 手动设置？
+
+完整指南（含配置示例和验证步骤）→ [A2A 跑通指南](docs/A2A_SETUP_GUIDE.md)
+
+---
+
 ## 文档导航
 
 ### 给你（用户）看的
@@ -174,6 +211,7 @@ Layer 2: KO 提炼的抽象知识（原则 / 模式 / 踩坑记录）
 | **[完整上手指南](docs/GETTING_STARTED.md)** | 从零到跑通的详细步骤 + 常见问题 | 第一次部署 |
 | **[核心概念详解](docs/CONCEPTS.md)** | 自主等级、QAPS、A2A、知识沉淀的完整说明 | 想深度理解系统 |
 | **[架构设计](docs/ARCHITECTURE.md)** | 三层架构、设计取舍、为什么这么做 | 想理解设计思路 |
+| **[A2A 跑通指南](docs/A2A_SETUP_GUIDE.md)** | A2A 配置、workspace 补丁、验证步骤 | 让 Agent 间能协作 |
 | **[自定义指南](docs/CUSTOMIZATION.md)** | 增删改 Agent、替换领域专家 | 想调整团队配置 |
 | **[已知问题](docs/KNOWN_ISSUES.md)** | 系统的真实边界和当前最佳实践 | 遇到奇怪行为时 |
 | **[开发历程](docs/JOURNEY.md)** | 从一个人的痛点到一支虚拟团队 | 想了解来龙去脉 |
