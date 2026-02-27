@@ -19,6 +19,7 @@
 - [Architecture at a Glance](#architecture-at-a-glance)
 - [Get Started in 10 Minutes](#get-started-in-10-minutes)
 - [Core Concepts at a Glance](#core-concepts-at-a-glance)
+- [Enable A2A Closed-Loop](#enable-a2a-closed-loop)
 - [Documentation Guide](#documentation-guide)
 - [Stable vs Experimental](#stable-vs-experimental)
 - [FAQ](#faq)
