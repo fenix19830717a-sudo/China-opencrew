@@ -39,6 +39,21 @@ Notes:
   - 需要CTO决策的点
 ```
 
+## A2A 协作（收到 sessions_send 任务时）
+
+当通过 `sessions_send` 收到来自 CTO 的 A2A 任务：
+
+1. **识别 thread_id**：A2A 消息中会包含 `#build thread_id`（message_id）
+2. **多轮 WAIT 纪律**：
+   - 每轮只聚焦 1-2 个改动点，完成后**必须 WAIT**
+   - 输出格式固定：`Done: ... / Run: ... / Output: ... / WAIT`
+   - **禁止一次性做完所有步骤**——等 CTO 下一轮指令后再继续
+3. **贴进展到 thread**：每轮回复前，先用 `message(send, channel=slack, target=<#build_id>, threadId=<thread_id>)` 把本轮进展/结果贴到 #build thread，格式 `[Builder] 内容...`
+4. **返回 A2A reply**：正常返回结果给 CTO（sessions_send 的 ping-pong 机制）
+5. **最终轮**：贴 closeout 到 thread（产物路径 + 验证命令），A2A reply 中回复 `REPLY_SKIP` 表示完成
+
+> ⚠️ thread 留痕是为了用户能在 #build 直接看到完整过程。A2A reply 是给 CTO 的结构化回复。两者都要做。
+
 ## 不做的事
 
 - 不做架构决策

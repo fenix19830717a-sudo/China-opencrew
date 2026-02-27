@@ -4,6 +4,24 @@ All notable changes to this repository will be documented in this file.
 
 The format is loosely based on Keep a Changelog.
 
+## [0.2.0] — 2026-02-27
+
+### Added
+- **docs/A2A_SETUP_GUIDE.md** (zh + en): To-Agent guide for setting up and validating A2A closed-loop — includes config checklist, workspace patch templates, Round0 handshake, and validation steps
+- **README** (both languages): new "跑通 A2A 闭环 / Enable A2A Closed-Loop" section with copy-paste prompt for agent-driven A2A setup
+
+### Changed
+- **shared/A2A_PROTOCOL.md**: incorporated 3 battle-tested patterns from real CTO↔Builder and CTO↔Ops runs:
+  - §2.5 Multi-round WAIT discipline + Round0 audit handshake
+  - Step 2 timeout handling + sessionKey caution
+  - §3 Dual-channel trace + closed-loop DoD (4-step hard rule)
+- **workspaces/cto/AGENTS.md**: expanded A2A dispatch section — added thread trace, #cto checkpoint sync, timeout handling, and 4-step DoD
+- **workspaces/builder/AGENTS.md**: added A2A collaboration section — multi-round WAIT discipline, thread trace, REPLY_SKIP protocol
+
+### Design Principle
+- All workspace changes are **append-only / incremental** — no rewrites of existing sections
+- A2A setup guide designed for **agent consumption** (Ops reads and executes) with minimal human intervention
+
 ## [0.1.1] — 2026-02-20
 
 ### Changed
