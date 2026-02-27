@@ -10,7 +10,8 @@
 
 ## 0. 前置条件
 
-- OpenCrew 已部署（至少 CoS + CTO + Builder 三个 Agent 能各自在 Slack 频道正常回复）
+- OpenCrew 已部署（最小可用：CoS + CTO + Builder，各自能在 Slack 频道正常回复）
+- 如果部署了 Ops，Ops 可以执行本指南；否则可由 CTO 或任一 Agent 执行
 - `openclaw.json` 中 `tools.agentToAgent.enabled: true`
 - Agent 间的 Slack 频道绑定（bindings）已配好
 
@@ -24,7 +25,7 @@ OpenCrew 部署完成后，每个 Agent 都能独立回答问题。但 **跨 Age
 |------|------|------|
 | CTO 在 #build 发消息，Builder 不响应 | 同一个 bot 的消息默认被忽略（防自循环） | 两步触发：Slack 锚点 + `sessions_send` |
 | `sessions_send` 返回 timeout | OpenClaw 默认超时较短 | timeout ≠ 失败；需要 thread 兜底消息 |
-| Builder 做完了但 Alex 不知道 | 结果只在 A2A 内部流转 | 双通道：A2A reply + Slack thread 留痕 |
+| Builder 做完了但用户不知道 | 结果只在 A2A 内部流转 | 双通道：A2A reply + Slack thread 留痕 |
 | 任务做完但没人汇报 | 没有闭环规则 | DoD 硬规则：回发起频道汇报 |
 
 ---
@@ -132,19 +133,25 @@ sessions_send timeout 容错：
 > ⚠️ thread 留痕是为了用户能在 #build 直接看到完整过程。A2A reply 是给 CTO 的结构化回复。两者都要做。
 ```
 
-### 3.3 CoS 的 AGENTS.md — 追加 A2A 指派 section（可选）
+### 3.3 CoS 的 AGENTS.md — 追加 A2A 指派 section
 
-如果你的 CoS 需要向 CTO 派单：
+CoS 是用户的主入口，向 CTO/CIO 指派任务是常见路径：
 
 ```markdown
-## A2A 指派（CoS → CTO）
+## A2A 指派（CoS → CTO / CIO）
 
 当需要让 CTO 处理技术任务：
 - 在 **#cto** 创建任务 root message：
   `A2A CoS→CTO | <TITLE> | TID:<...>`
+- 正文给完整任务包（建议 `shared/SUBAGENT_PACKET_TEMPLATE.md`）。
 - 用 `sessions_send` 触发 CTO：
   `agent:cto:slack:channel:<#cto_id>:thread:<root_ts>`
-- 等待 CTO 在 #cto 的结果汇报。
+- 等待 CTO 在 #cto 的结果汇报，收到后同步到 #hq 向用户汇报。
+
+当需要让 CIO 处理领域任务（如投资分析）：
+- 同理在 **#invest** 创建 root message 并用 `sessions_send` 触发。
+
+sessions_send timeout 容错：同 CTO（timeout ≠ 失败，需 thread 兜底）。
 ```
 
 ---
@@ -178,16 +185,22 @@ sessions_send timeout 容错：
 - ✅ Builder 在该 thread 里回复了（`[Builder] Done: ... / WAIT`）
 - ✅ CTO 回到 #cto 汇报了结果
 
-### 4.3 CoS → CTO 闭环验证（可选）
+### 4.3 CoS → CTO 闭环验证
 
 在 `#hq` 频道告诉 CoS：
 
 ```
-请执行一次 A2A 测试：
-1. 在 #cto 给 CTO 发一个简单问题（例如"当前 workspace 目录结构是什么"）
-2. 用 sessions_send 触发
-3. 确认 CTO 在 thread 里回复了
+请执行一次 A2A 闭环测试：
+1. 在 #cto 创建一个任务 root message（让 CTO 检查当前 workspace 目录结构并回报）
+2. 用 sessions_send 触发 CTO
+3. 确认 CTO 在 Slack thread 里回复了
+4. CTO 完成后，回 #hq 向我汇报结果
 ```
+
+**验收标准**：
+- ✅ #cto 出现了 root message（A2A CoS→CTO | ...）
+- ✅ CTO 在该 thread 里回复了
+- ✅ CoS 回到 #hq 汇报了结果
 
 ---
 

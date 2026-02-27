@@ -176,7 +176,7 @@ Layer 2: KO 提炼的抽象知识（原则 / 模式 / 踩坑记录）
 
 ### 让你的 Agent 自动完成 A2A 设置
 
-把下面这段发给你的 **Ops Agent**（在 `#ops` 频道），或任何一个 Agent：
+把下面这段发给你的任一 Agent（推荐 **Ops**，也可以是 **CTO** 或 **CoS**）：
 
 ```
 请帮我跑通 A2A 闭环。
@@ -189,8 +189,8 @@ Layer 2: KO 提炼的抽象知识（原则 / 模式 / 踩坑记录）
 
 请按 A2A_SETUP_GUIDE.md 的步骤：
 1. 检查并补全 openclaw.json 中的 A2A 配置（agentToAgent.allow / maxPingPongTurns）
-2. 给 CTO 和 Builder 的 AGENTS.md 追加 A2A 协作 section（最小增量，不要重写）
-3. 执行 CTO→Builder 闭环验证测试
+2. 给 CoS、CTO 和 Builder 的 AGENTS.md 追加 A2A 协作 section（最小增量，不要重写）
+3. 先验证 CoS→CTO 闭环，再验证 CTO→Builder 闭环
 4. 把结果汇报给我
 
 不要改我的 models / auth / gateway 其他配置，只做 A2A 相关的增量。

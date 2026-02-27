@@ -10,7 +10,8 @@
 
 ## 0. Prerequisites
 
-- OpenCrew is deployed (at least CoS + CTO + Builder can each reply in their Slack channels)
+- OpenCrew is deployed (minimum viable: CoS + CTO + Builder, each can reply in their Slack channel)
+- If Ops is deployed, Ops can execute this guide; otherwise any Agent (CTO, CoS) can do it
 - `openclaw.json` has `tools.agentToAgent.enabled: true`
 - Agent-to-channel bindings are configured
 
@@ -124,17 +125,25 @@ When receiving A2A tasks from CTO via `sessions_send`:
 > ⚠️ Thread trace is for user visibility. A2A reply is for CTO. Both are required.
 ```
 
-### 3.3 CoS's AGENTS.md — Append A2A Dispatch Section (Optional)
+### 3.3 CoS's AGENTS.md — Append A2A Dispatch Section
+
+CoS is the user's main entry point. Dispatching to CTO/CIO is a primary path:
 
 ```markdown
-## A2A Dispatch (CoS → CTO)
+## A2A Dispatch (CoS → CTO / CIO)
 
 When CTO needs to handle a technical task:
 - Create task root message in **#cto**:
   `A2A CoS→CTO | <TITLE> | TID:<...>`
+- Body: complete task packet (use `shared/SUBAGENT_PACKET_TEMPLATE.md`).
 - Use `sessions_send` to trigger CTO:
   `agent:cto:slack:channel:<#cto_id>:thread:<root_ts>`
-- Wait for CTO's result report in #cto.
+- Wait for CTO's result report in #cto, then sync to #hq for user.
+
+When CIO needs to handle a domain task (e.g., investment analysis):
+- Same pattern in **#invest** — create root message + sessions_send.
+
+sessions_send timeout handling: same as CTO (timeout ≠ failure, post fallback in thread).
 ```
 
 ---
@@ -164,6 +173,23 @@ Run an A2A closed-loop test:
 - ✅ Root message appeared in #build (A2A CTO→Builder | ...)
 - ✅ Builder replied in that thread (`[Builder] Done: ... / WAIT`)
 - ✅ CTO reported back in #cto
+
+### 4.3 CoS → CTO Closed-Loop Test
+
+Tell CoS in `#hq`:
+
+```
+Run an A2A closed-loop test:
+1. Create a task root message in #cto (have CTO check workspace directory structure and report)
+2. Use sessions_send to trigger CTO
+3. Confirm CTO replied in the Slack thread
+4. After CTO completes, report results back to me in #hq
+```
+
+**Acceptance criteria**:
+- ✅ Root message appeared in #cto (A2A CoS→CTO | ...)
+- ✅ CTO replied in that thread
+- ✅ CoS reported back in #hq
 
 ---
 
@@ -202,4 +228,4 @@ A: Technically yes, but organizationally Builder is "execute only." For clarific
 
 ---
 
-> 📖 Related → [A2A Protocol](../shared/A2A_PROTOCOL.md) · [Concepts](CONCEPTS.md) · [Agent Onboarding](AGENT_ONBOARDING.md) · [Customization](CUSTOMIZATION.md)
+> 📖 Related → [A2A Protocol](../../shared/A2A_PROTOCOL.md) · [Concepts](CONCEPTS.md) · [Agent Onboarding](AGENT_ONBOARDING.md) · [Customization](CUSTOMIZATION.md)

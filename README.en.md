@@ -170,7 +170,7 @@ You give CTO a dev task in `#cto` → CTO automatically dispatches to Builder in
 
 ### Let Your Agent Handle A2A Setup
 
-Send this to your **Ops Agent** (in `#ops`), or any Agent:
+Send this to any Agent (recommended: **Ops**, or **CTO** / **CoS**):
 
 ```
 Help me enable A2A closed-loop.
@@ -183,8 +183,8 @@ Current state:
 
 Follow the steps in A2A_SETUP_GUIDE.md:
 1. Check and complete A2A config in openclaw.json (agentToAgent.allow / maxPingPongTurns)
-2. Append A2A collaboration sections to CTO and Builder's AGENTS.md (minimal increment, don't rewrite)
-3. Run CTO→Builder closed-loop validation test
+2. Append A2A collaboration sections to CoS, CTO, and Builder's AGENTS.md (minimal increment, don't rewrite)
+3. First validate CoS→CTO closed-loop, then CTO→Builder closed-loop
 4. Report results to me
 
 Do not touch my models / auth / gateway config — only make A2A-related changes.
