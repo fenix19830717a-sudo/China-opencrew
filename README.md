@@ -1,149 +1,157 @@
-# AI Government - 智能体政府架构
+# AI Government - Intelligent Agent Governance Framework
 
-> 基于中国古代三省六部制的多项目、多部署环境AI协作体系
+> A multi-project, multi-environment AI agent collaboration system based on Tang Dynasty's Three Departments and Six Ministries architecture.
 
-## 核心理念
+[中文](#中文说明) | [English](#english-description)
 
-**三省六部制是中国历史上最稳定、最成熟的政治架构。**
+---
 
-本架构支持：
-- **多国策**：多个项目并行管理
-- **多地方**：多个部署环境（服务器/云/本地）
-- **灵活组合**：任何项目可部署到任何地方
+## Quick Start
 
-## 架构概览
+### Naming Convention (New!)
 
-### 中央 - 行政中枢（全局管理）
+We use **functional English names** that clearly describe what each agent does:
+
+| English ID | Name | Chinese | Function |
+|------------|------|---------|----------|
+| chief-steward | **Chief Steward** | 大内总管 | User interface |
+| policy-draft | **Policy Draft** | 中书省 | Policy drafting |
+| policy-review | **Policy Review** | 门下省 | Quality review |
+| execution | **Execution** | 尚书省 | Project management |
+| resources | **Resources** | 户部 | Resource & cost |
+| engineering | **Engineering** | 工部 | Development |
+| operations | **Operations** | 刑部 | System operations |
+| security | **Security** | 兵部 | Security & audit |
+| knowledge | **Knowledge** | 礼部 | Knowledge & research |
+| people | **People** | 吏部 | Performance & training |
+
+**Why these names?** See [Naming Convention](docs/NAMING_CONVENTION.md)
+
+---
+
+## Architecture Overview
 
 ```
-用户（皇帝）
-    ↓↑ 奏折上报（OpenClaw人机交互）
-大内总管（唯一接口）
-    ↓ 本地知识库
-中书省（国策起草）
-    ↓ 本地知识库
-门下省（国策审核）
-    ↓ 本地知识库
-尚书省（国策分解）
-    ├─→ 本地知识库 → 中央六部（全局职能）
-    └─→ GitHub → 各州牧（项目负责人）
+User
+  ↕
+Chief Steward (User Interface)
+  ↕
+Policy Draft (Draft policies) → Policy Review (Review policies)
+  ↕
+Execution (Project Management)
+  ↕
+Six Ministries
+├── Resources (Resource management)
+├── Engineering (Development)
+├── Operations (System ops)
+├── Security (Security & audit)
+├── Knowledge (Knowledge & research)
+└── People (Performance & training)
 ```
 
-### 地方 - 州郡层级（项目+部署）
+---
 
-```
-多层地方架构：
+## Core Features
 
-州牧（项目负责人）
-    ↓ 管理多个部署环境
-部署环境A（生产环境）
-    ↓ 本地知识库
-地方六部（在该环境执行）
+### Multi-Project × Multi-Environment
 
-部署环境B（测试环境）
-    ↓ 本地知识库
-地方六部（在该环境执行）
-```
+Support N projects × M environments:
+- **Project Level**: Governor manages multiple environments per project
+- **Environment Level**: Local ministries execute in specific environment
+- **Flexible**: Any project can deploy to any environment
 
-### 关键概念
+### Two Communication Modes
 
-| 概念 | 说明 | 对应 |
-|------|------|------|
-| **国策** | 宏观项目规划 | 一个产品/系统 |
-| **州** | 项目管理层级 | 项目负责人（州牧）|
-| **地方** | 部署环境 | 服务器/云环境/集群 |
-| **地方六部** | 环境执行层 | 在该环境的具体执行者 |
+1. **Knowledge Base Mode** (Default): Decentralized, no external dependency
+2. **Slack Mode** (Compatible): Real-time, visual management
+3. **Hybrid Mode** (Recommended): Slack for central, knowledge base for execution
 
-## 项目结构
+See [Slack Compatibility](docs/SLACK_COMPATIBILITY.md)
+
+---
+
+## Documentation
+
+- [Architecture Design](docs/ARCHITECTURE.md)
+- [Naming Convention](docs/NAMING_CONVENTION.md) ⭐ New!
+- [Slack Compatibility](docs/SLACK_COMPATIBILITY.md)
+- [Workload Simulation](docs/WORKLOAD_SIMULATION.md)
+- [OpenCrew Comparison](docs/COMPARISON.md)
+
+---
+
+## Project Structure
 
 ```
 aigovernment/
-├── central/                 # 中央（全局管理）
-│   ├── steward/            # 大内总管
-│   ├── chancellery/        # 中书省
-│   ├── inspectorate/       # 门下省
-│   ├── state/              # 尚书省
-│   └── ministries/         # 六部（全局职能）
-│       ├── revenue/        # 户部：全局资源统计
-│       ├── works/          # 工部：全局技术指导
-│       ├── justice/        # 刑部：全局运维监控
-│       ├── war/            # 兵部：全局安全+对外操作
-│       ├── rites/          # 礼部：全局知识+对地方更新
-│       └── personnel/      # 吏部：全局考核培训
+├── central/                    # Central layer (global management)
+│   ├── chief-steward/         # User interface
+│   ├── policy-draft/          # Policy drafting
+│   ├── policy-review/         # Policy review
+│   ├── execution/             # Project management
+│   └── ministries/            # Six ministries
+│       ├── resources/         # Resource & cost
+│       ├── engineering/       # Development
+│       ├── operations/        # System operations
+│       ├── security/          # Security & audit
+│       ├── knowledge/         # Knowledge & research
+│       └── people/            # Performance & training
 │
-├── templates/               # 通用模板（公开部分）
-│   ├── projects/           # 项目类型模板
-│   │   ├── web-platform/   # Web平台项目模板
-│   │   ├── ecommerce/      # 电商项目模板
-│   │   └── ai-service/     # AI服务项目模板
-│   │
-│   └── regions/            # 部署环境模板
-│       ├── cloud-aws/      # AWS云环境模板
-│       ├── cloud-ali/      # 阿里云环境模板
-│       └── on-premise/     # 私有部署模板
+├── templates/                  # Templates for projects & environments
+│   ├── projects/              # Project templates
+│   └── regions/               # Environment templates
 │
-└── examples/                # 使用示例（参考）
-    └── （具体项目示例，不包含在公开仓库）
+└── docs/                       # Documentation
 ```
 
-## 使用方式
+---
 
-### 1. 初始化中央（只需一次）
+##中文说明
 
-```bash
-# 克隆中央配置
-cp -r central/* ~/.openclaw/central/
-```
+## 命名规范（新！）
 
-### 2. 创建新项目（国策）
+我们使用**职能导向的英文名称**，一看就知道是做什么的：
 
-```bash
-# 基于模板创建新项目
-cp -r templates/projects/web-platform ~/.openclaw/projects/my-platform/
-# 修改配置文件，指定项目信息
-```
+| 英文ID | 英文名称 | 中文 | 核心职能 |
+|--------|----------|------|----------|
+| chief-steward | **Chief Steward** | 大内总管 | 用户接口 |
+| policy-draft | **Policy Draft** | 中书省 | 政策起草 |
+| policy-review | **Policy Review** | 门下省 | 质量审核 |
+| execution | **Execution** | 尚书省 | 项目管理 |
+| resources | **Resources** | 户部 | 资源成本 |
+| engineering | **Engineering** | 工部 | 技术开发 |
+| operations | **Operations** | 刑部 | 系统运维 |
+| security | **Security** | 兵部 | 安全审计 |
+| knowledge | **Knowledge** | 礼部 | 知识研究 |
+| people | **People** | 吏部 | 考核培训 |
 
-### 3. 添加新部署环境（地方）
+**为什么用这些名称？** 参见 [命名规范](docs/NAMING_CONVENTION.md)
 
-```bash
-# 基于模板创建新环境
-cp -r templates/regions/cloud-ali ~/.openclaw/regions/prod-ali/
-# 配置环境参数
-```
+---
 
-### 4. 部署项目到环境
+## 核心特性
 
-```bash
-# 在项目目录中创建部署配置
-# 连接项目模板 + 环境模板
-# 初始化地方六部
-```
+### 多项目 × 多环境
 
-## 多项目多环境支持
+支持 N项目 × M环境 灵活组合：
+- **项目层**：州牧管理每个项目的多个环境
+- **环境层**：地方六部在具体环境执行
+- **灵活**：任何项目可部署到任何环境
 
-### 场景：3项目 × 2环境
+### 两种沟通模式
 
-| 项目\环境 | 生产环境(ali) | 测试环境(aws) |
-|-----------|--------------|--------------|
-| **B2B平台** | 州牧A管理 | 州牧A管理 |
-| **电商站** | 州牧B管理 | 州牧B管理 |
-| **AI服务** | 州牧C管理 | 州牧C管理 |
+1. **知识库模式**（默认）：去中心化，不依赖外部服务
+2. **Slack模式**（兼容）：实时可视化
+3. **混合模式**（推荐）：中央Slack + 执行层知识库 + 地方GitHub
 
-每个单元都有独立的地方六部执行。
+参见 [Slack兼容方案](docs/SLACK_COMPATIBILITY.md)
 
-### 州牧管理范围
+---
 
-一个州牧可以管理：
-- 一个项目的多个部署环境
-- 多个相关项目（如：前端+后端+Admin）
+## 文档导航
 
-## 与OpenCrew的关系
-
-基于OpenCrew fork，重新设计为支持多项目多环境的架构。
-
-## 文档
-
-- `docs/ARCHITECTURE.md` - 架构设计
-- `docs/AGENT_HIERARCHY.md` - 层级关系
-- `docs/COMMUNICATION.md` - 沟通协议
-- `templates/README.md` - 模板使用指南
+- [架构设计](docs/ARCHITECTURE.md)
+- [命名规范](docs/NAMING_CONVENTION.md) ⭐ 新！
+- [Slack兼容方案](docs/SLACK_COMPATIBILITY.md)
+- [工作量模拟](docs/WORKLOAD_SIMULATION.md)
+- [OpenCrew对比](docs/COMPARISON.md)

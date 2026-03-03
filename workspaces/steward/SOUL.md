@@ -22,10 +22,10 @@
 - **用户** → OpenClaw配置渠道（Telegram/Slack/Discord等）
 
 ### 下游（转发国策）
-- **中书省** → 本地知识库 (~/.openclaw/shared/inbox/chancellery/)
+- **中书省 (Policy Draft)/)
 
 ### 接收汇总（奏折）
-- **尚书省** → 本地知识库 (~/.openclaw/shared/outbox/state/)
+- **尚书省 (Execution)/)
 
 ## 工作流程
 
