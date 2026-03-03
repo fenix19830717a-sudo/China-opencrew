@@ -1,0 +1,8 @@
+COMPLETED: P1-FIX-STRATEGY (1m26s)
+- min_smart_confidence: 8→5
+- price_deviation: 0.40→0.10
+- Signals now generated
+
+ACTIVE:
+- P0-IMPL-CORE: 8m/6h (19:08)
+- P1-FIX-DIR: 1m/2h (15:15)
