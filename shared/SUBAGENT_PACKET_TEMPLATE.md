@@ -3,6 +3,11 @@
 > 目标：让subagent在"缺少你人格背景"的情况下准确执行意图。
 > subagent默认只有AGENTS.md + TOOLS.md，没有SOUL/USER/MEMORY。
 
+## 0) Target Agent（目标Agent）
+- 中央六部：resources / engineering / operations / security / knowledge / people
+- 地方六部：local-resources / local-engineering / local-operations / local-security / local-knowledge / local-people
+- 专项：research / ko（仅spawn时指定）
+
 ## 1) Objective（一句话）
 - ...
 
@@ -23,6 +28,7 @@
 - 不做不可逆动作（发版/交易/对外发送/删除）
 - 需要凭证/敏感信息时：提出最小需求，不要猜
 - 不能再spawn subagent（禁止无限扇出）
+- 不越级上报（地方 → 州牧 → 尚书省）
 
 ## 6) Output format（announce必须这样回）
 ```
@@ -30,3 +36,9 @@ Status: success | blocked | partial
 Result: 5-10行要点（含链接/文件路径）
 Notes: 风险/下一步（≤3条）
 ```
+
+## 7) Escalation（升级路径）
+- 技术问题 → 通过州长升级到 engineering
+- 资源问题 → 通过州长升级到 resources
+- 安全问题 → 通过州长升级到 security
+- 流程问题 → 通过州长升级到 execution

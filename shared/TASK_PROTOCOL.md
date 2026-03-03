@@ -4,12 +4,12 @@
 在 `TASKS.md` 新建一条任务卡：
 - id：YYYYMMDD-序号
 - type：A/P/S
-- owner：cos/cto/builder/cio/ko/ops
+- owner：main/policy-draft/policy-review/execution/resources/engineering/operations/security/knowledge/people
 - objective：一句话
 - definition_of_done：可验证条件（必须客观）
 - risks：1-3条
 - next_action：下一步（可执行）
-- signal：0-3（是否需要KO/Ops复盘）
+- signal：0-3（是否需要knowledge/ops复盘）
 
 ## 2) 完成判定（Definition of Done）
 任务完成必须同时满足：
@@ -40,3 +40,4 @@ Checkpoint的结果：
 - 用 SUBAGENT_PACKET_TEMPLATE.md 组装自包含任务包
 - subagent没有你的SOUL/USER/MEMORY，任务描述必须完整
 - 要求announce必须带：Status/Result/Notes
+- 指定正确的target agent（resources/engineering/operations/security/knowledge/people）

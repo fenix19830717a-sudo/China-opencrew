@@ -2,7 +2,7 @@
 
 ## Task
 - ID: [YYYYMMDD-序号]
-- Owner: [agent_id]
+- Owner: [main/policy-draft/policy-review/execution/resources/engineering/operations/security/knowledge/people]
 - Checkpoint#: [1/2/...]
 
 ## 触发原因
@@ -24,7 +24,7 @@
 | ... | ... | ... |
 
 ## 子任务（如需spawn）
-1. [任务描述] → spawn to [agent_id]
+1. [任务描述] → spawn to [resources/engineering/operations/security/knowledge/people]
 2. ...
 
 ## 上下文快照（供恢复用）

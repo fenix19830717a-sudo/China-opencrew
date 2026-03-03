@@ -10,15 +10,15 @@
 ### Layer 1: Closeout（每任务强制，10-15行）
 - 每个A/P/S任务完成时产出
 - 包含：产出物链接、决策、下一步、踩坑、signal
-- 用途：KO/Ops的主要输入源
+- 用途：knowledge/ops的主要输入源
 
-### Layer 2: 抽象知识（KO周期性产出）
+### Layer 2: 抽象知识（knowledge周期性产出）
 - Principles（原则）：跨场景适用的指导规则
 - Patterns（模式）：验证有效的可复用方法
 - Scars（伤疤）：踩过的坑，避免重复
 - 用途：长期复用，指导未来决策
 
-## KO工作流
+## Knowledge工作流
 
 ### 输入
 - 只读signal≥2的closeout
@@ -37,7 +37,7 @@
 ## 存储结构
 
 ```
-workspace-ko/
+workspace-knowledge/
 ├── MEMORY.md              # 长期精选
 ├── knowledge/
 │   ├── principles.md      # 原则
@@ -49,5 +49,5 @@ workspace-ko/
 
 ## 与Ops的协作
 
-- KO产出的principle/pattern变更 → 如影响系统级 → 通知Ops
+- knowledge产出的principle/pattern变更 → 如影响系统级 → 通知Ops
 - Ops审核后 → 决定是否升级为SYSTEM_RULES

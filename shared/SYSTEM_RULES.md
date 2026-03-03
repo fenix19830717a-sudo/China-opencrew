@@ -26,7 +26,7 @@
 ## 5) Closeout / Checkpoint（强制产生高信号状态）
 - **Closeout**：任务结束时产出10-15行结构化总结
 - **Checkpoint**：长任务在"上下文膨胀/跨天/中断风险高"时切割
-- **目标**：KO/Ops只读closeout/checkpoint/TASKS，不读海量对话
+- **目标**：knowledge/ops只读closeout/checkpoint/TASKS，不读海量对话
 
 ## 6) 自我迭代（允许，但必须可审计）
 - 任何Agent可改自己的：SOUL/AGENTS/MEMORY/TOOLS
@@ -37,3 +37,9 @@
 - **优先Spawn**：并行、隔离、非阻塞的执行型/调研型任务
 - **必要时A2A**：需要"持续状态协作"的跨主Agent交互
 - **原则**：不滥用A2A，避免跨域上下文混杂
+
+## 8) 三省六部纪律
+- **main(CoS)** 不直达六部，必须通过 execution
+- **六部** 不跨级指挥地方，必须通过 governor
+- **地方** 只执行不派单，回传通过 GitHub
+- 所有 A2A 必须遵守权限矩阵（见 A2A_PROTOCOL.md）
