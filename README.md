@@ -1,121 +1,363 @@
 # AI Government - Multi-Agent Governance Framework
 
-> An intelligent agent collaboration system based on Tang Dynasty's Three Departments and Six Ministries architecture, inspired by and compatible with OpenCrew.
+> An intelligent agent collaboration system based on Tang Dynasty's Three Departments and Six Ministries architecture, inspired by and compatible with [OpenCrew](https://github.com/AlexAnys/opencrew).
+
+**English** | [中文](#快速开始)
 
 ---
 
-## Acknowledgment
+## 🙏 Acknowledgment
 
-This project is deeply inspired by OpenCrew - an excellent multi-agent operating system for OpenClaw.
+This project is deeply inspired by **[OpenCrew](https://github.com/AlexAnys/opencrew)** - an excellent multi-agent operating system for OpenClaw created by AlexAnys.
 
-### Inherited from OpenCrew
-- A2A Protocol: Agent-to-Agent collaboration patterns  
-- Subagent Templates: Standardized task delegation
-- Closeout Culture: Mandatory task completion documentation
-- Knowledge Pipeline: Three-layer knowledge system
-- CLI-First Principle: Every change must be locally verifiable
+We inherited:
+- A2A Protocol, Subagent Templates, Closeout Culture
+- CLI-First Principle, Knowledge Pipeline
 
-### Extended Features
-- Tang Dynasty Architecture: Three Departments and Six Ministries
-- Multi-Project Support: N projects × M environments
-- Auto-Scheduling: Intelligent task scheduling when idle
-- Multi-Threading: Adaptive threading based on resources
-- Load Balancing: Distributed audit functions
+We extended:
+- Tang Dynasty Architecture (Three Departments + Six Ministries)
+- Multi-Project × Multi-Environment Support
+- Auto-Scheduling, Adaptive Multi-Threading
 
 ---
 
-## Architecture
+## 🚀 One-Line Installation
 
-### Three Layers
+```bash
+curl -fsSL https://raw.githubusercontent.com/fenix19830717a-sudo/China-opencrew/main/install.sh | bash -s -- --capital
+```
 
-1. **Central**: Global management (PolicyDraft, PolicyReview, Execution, Six Ministries)
-2. **Regional**: Project level (Governor manages multiple environments)
-3. **Local**: Execution level (Local ministries per environment)
-
-### Agent Mapping (OpenCrew → AI Government)
-
-| OpenCrew | AI Government | Function | Slack |
-|----------|---------------|----------|-------|
-| main(CoS) | main(CoS) | User interface | #main |
-| cto | engineering | Development | #engineering |
-| builder | local-engineering | Local execution | project-channels |
-| research/ko | knowledge | Research & docs | #knowledge |
-| ops | operations | Operations | #operations |
-| — | policy-draft | Policy drafting | #policy |
-| — | policy-review | Policy review | #policy |
-| — | execution | Project management | #execution |
-| — | resources | Resources & cost | #resources |
-| — | security | Security & audit | #security |
-| — | people | Performance & training | #people |
-
-### Channel Sharing: Policy-Draft + Policy-Review
-
-Q: Will they conflict sharing #policy?
-A: No, they collaborate sequentially:
-- PolicyDraft creates draft (first)
-- PolicyReview validates (second)
-- Thread-based isolation prevents confusion
-
-Alternative: Use separate #policy-draft and #policy-review channels if preferred.
+**That's it!** The installer will:
+1. Detect your system and install dependencies
+2. Clone the AI Government framework
+3. Configure OpenClaw with default settings
+4. Set this device as the **Capital** (central hub)
 
 ---
 
-## Key Features
+## 📋 Installation Modes
 
-### 1. Auto-Scheduling
+### Mode 1: Capital (中枢/首都) - Default
 
-When no tasks for 30 minutes, Execution and Governors auto-assign pending tasks to idle agents.
+For your main control server:
 
-Config:
+```bash
+# One-line install
+curl -fsSL https://raw.githubusercontent.com/fenix19830717a-sudo/China-opencrew/main/install.sh | bash -s -- --capital
+
+# Or with custom options
+curl -fsSL .../install.sh | bash -s -- --capital \
+  --slack-token "xoxb-xxx" \
+  --slack-app-token "xapp-xxx" \
+  --region "aliyun"
+```
+
+**What's installed:**
+- Central layer: main(CoS) + Three Departments + Six Ministries
+- Full governance capability
+- Can manage regional deployments
+
+### Mode 2: Regional (地方/州) - For additional servers
+
+For project-specific servers:
+
+```bash
+# One-line install
+curl -fsSL https://raw.githubusercontent.com/fenix19830717a-sudo/China-opencrew/main/install.sh | bash -s -- --regional
+
+# Connect to capital
+curl -fsSL .../install.sh | bash -s -- --regional \
+  --capital-host "https://your-capital-server.com" \
+  --project "my-project"
+```
+
+**What's installed:**
+- Regional layer: Governor + Local Six Ministries
+- Connects to Capital via GitHub
+- Executes tasks locally
+
+### Mode 3: Minimal (最小安装) - For development
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/fenix19830717a-sudo/China-opencrew/main/install.sh | bash -s -- --minimal
+```
+
+Only installs essential agents: main + execution + engineering
+
+---
+
+## 🔧 Manual Installation (if one-line fails)
+
+### Prerequisites
+
+- Linux/macOS with bash
+- OpenClaw installed (`npm install -g openclaw`)
+- Git
+- Slack workspace (optional but recommended)
+
+### Step 1: Clone Repository
+
+```bash
+git clone https://github.com/fenix19830717a-sudo/China-opencrew.git ~/.openclaw/ai-government
+cd ~/.openclaw/ai-government
+```
+
+### Step 2: Choose Installation Mode
+
+#### For Capital (中枢):
+
+```bash
+# Copy central configuration
+cp -r central/* ~/.openclaw/
+
+# Configure as capital
+cat > ~/.openclaw/config/mode << 'EOF'
+MODE=capital
+CAPITAL=true
+EOF
+```
+
+#### For Regional (地方):
+
+```bash
+# Copy regional template
+cp -r templates/regions/cloud-ali ~/.openclaw/regional/my-region
+
+# Configure as regional
+cat > ~/.openclaw/config/mode << 'EOF'
+MODE=regional
+CAPITAL_HOST=https://your-capital.com
+PROJECT_NAME=my-project
+EOF
+```
+
+### Step 3: Configure OpenClaw
+
+```bash
+# Copy configuration template
+cp config/openclaw.json ~/.openclaw/
+
+# Edit with your settings
+nano ~/.openclaw/openclaw.json
+```
+
+Required fields:
+```json
 {
-  "scheduling": {
-    "idleThreshold": "30m",
-    "executor": "execution",
-    "scope": ["central", "regional"]
-  }
-}
-
-### 2. Multi-Threading
-
-Adaptive thread count based on system resources:
-- minThreads: 2 (default)
-- maxThreads: min(CPU_cores × 2, 16)
-- auto-detect on startup
-
-Config:
-{
-  "agents": {
-    "engineering": {
-      "threads": { "min": 2, "max": 8, "adaptive": true }
+  "channels": {
+    "slack": {
+      "botToken": "xoxb-your-bot-token",
+      "appToken": "xapp-your-app-token"
     }
   }
 }
+```
 
-### 3. Audit Distribution
-
-| Audit Type | Owner |
-|------------|-------|
-| Security | Security |
-| Quality | People |
-| Resource | Resources |
-| Process | Execution |
-
-Balances workload: 115 → 70-95人日 per agent
-
----
-
-## Quick Start
+### Step 4: Initialize
 
 ```bash
-# Clone and deploy
-git clone https://github.com/your-org/ai-government.git
-cp -r ai-government/central/* ~/.openclaw/central/
-cp ai-government/config/openclaw.json ~/.openclaw/
+# Run initialization script
+./scripts/init.sh
+
+# Or manually:
+openclaw channels add --channel slack \
+  --slack-bot-token "xoxb-xxx" \
+  --slack-app-token "xapp-xxx"
+
 openclaw gateway restart
+```
+
+### Step 5: Verify Installation
+
+```bash
+# Check status
+openclaw status
+
+# Test main agent
+openclaw sessions send main "ping"
+
+# Verify all agents
+openclaw agents list
 ```
 
 ---
 
-## License
+## 📊 Architecture
 
-MIT License - Acknowledgments to OpenCrew for the foundation.
+```
+┌─────────────────────────────────────────────────────────┐
+│  CAPITAL (中枢) - Central Hub                           │
+│  ├─ main (CoS) - User Interface                         │
+│  ├─ Three Departments:                                  │
+│  │  ├─ policy-draft (中书省) - Policy Drafting         │
+│  │  ├─ policy-review (门下省) - Policy Review          │
+│  │  └─ execution (尚书省) - Project Management         │
+│  └─ Six Ministries:                                     │
+│     ├─ resources (户部) - Resources & Cost             │
+│     ├─ engineering (工部) - Development                │
+│     ├─ operations (刑部) - System Operations           │
+│     ├─ security (兵部) - Security & Audit              │
+│     ├─ knowledge (礼部) - Knowledge & Research         │
+│     └─ people (吏部) - Performance & Training          │
+└─────────────────────────────────────────────────────────┘
+                            │ GitHub / API
+                            ↓
+┌─────────────────────────────────────────────────────────┐
+│  REGIONAL (地方) - Project Servers                      │
+│  ├─ Governor (州牧) - Project Manager                   │
+│  └─ Local Six Ministries (地方六部)                     │
+│     - Execute tasks locally                             │
+│     - Report to Capital                                 │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+## ⚙️ Configuration Options
+
+### Environment Variables
+
+```bash
+# Required
+export AG_GOVERNMENT_MODE=capital  # or regional
+export AG_SLACK_BOT_TOKEN=xoxb-xxx
+export AG_SLACK_APP_TOKEN=xapp-xxx
+
+# Optional
+export AG_THREADS_MIN=2
+export AG_THREADS_MAX=8
+export AG_SCHEDULING_IDLE_THRESHOLD=30m
+export AG_CAPITAL_HOST=https://capital.example.com
+```
+
+### Configuration Files
+
+| File | Purpose |
+|------|---------|
+| `~/.openclaw/openclaw.json` | Main OpenClaw config |
+| `~/.openclaw/config/mode` | Capital/Regional mode |
+| `~/.openclaw/config/threads` | Thread limits |
+| `~/.openclaw/config/scheduling` | Auto-scheduling config |
+
+---
+
+## 🎯 Quick Start
+
+### 1. Create Your First Project
+
+```bash
+# On Capital
+mkdir -p ~/.openclaw/projects/my-app
+cd ~/.openclaw/projects/my-app
+
+# Initialize project
+cp -r ~/.openclaw/ai-government/templates/projects/web-platform/* .
+```
+
+### 2. Deploy to Regional Server
+
+```bash
+# On Regional server
+curl -fsSL .../install.sh | bash -s -- --regional \
+  --capital-host "https://your-capital.com" \
+  --project "my-app"
+```
+
+### 3. Start Working
+
+In Slack:
+```
+#main
+You: I need a user authentication system
+main(CoS): Received. Forwarding to policy layer.
+  → Creates thread in #policy
+
+#policy
+policy-draft: 【Policy Draft】Auth System
+  Objective: Build auth with login/register
+  Timeline: 2 weeks
+  → @policy-review please review
+
+policy-review: Approved. Forwarding to execution.
+  → @execution
+
+#execution
+execution: 【Execution Plan】
+  M1: Login module → @engineering
+  M2: Register module → @engineering
+  Security audit → @security
+  → Creates tasks
+
+#engineering
+engineering: Working on M1...
+  → Delegates to regional via GitHub
+```
+
+---
+
+## 📚 Documentation
+
+- [Architecture Overview](docs/ARCHITECTURE.md)
+- [A2A Protocol](shared/A2A_PROTOCOL.md) - Agent-to-Agent collaboration
+- [System Rules](shared/SYSTEM_RULES.md) - Global guidelines
+- [Task Protocol](shared/TASK_PROTOCOL.md) - Task management
+- [Subagent Template](shared/SUBAGENT_PACKET_TEMPLATE.md) - Spawn tasks
+
+---
+
+## 🛠️ Troubleshooting
+
+### Installation Fails
+
+```bash
+# Check prerequisites
+which openclaw || npm install -g openclaw
+which git || apt-get install git
+
+# Re-run with debug
+curl -fsSL .../install.sh | bash -s -- --capital --debug
+```
+
+### Agent Not Responding
+
+```bash
+# Check gateway status
+openclaw gateway status
+
+# Restart gateway
+openclaw gateway restart
+
+# Check logs
+openclaw logs --follow
+```
+
+### Slack Connection Issues
+
+```bash
+# Verify tokens
+curl -H "Authorization: Bearer $TOKEN" \
+  https://slack.com/api/auth.test
+
+# Reconfigure
+openclaw channels remove slack
+openclaw channels add --channel slack \
+  --slack-bot-token "xoxb-xxx" \
+  --slack-app-token "xapp-xxx"
+```
+
+---
+
+## 🤝 Contributing
+
+Contributions welcome! Please:
+1. Fork the repository
+2. Create a feature branch
+3. Submit a pull request
+
+## 📝 License
+
+MIT License - Acknowledgments to [OpenCrew](https://github.com/AlexAnys/opencrew) for the foundation.
+
+---
+
+*Built with ❤️ extending OpenCrew's vision*
