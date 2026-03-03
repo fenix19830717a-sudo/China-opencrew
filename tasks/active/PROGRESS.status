@@ -1,13 +1,14 @@
-COMPLETED: P0-IMPL-CORE (18m vs 6h, 95% optimization)
-- 10 APIs implemented (9+1 bonus)
-- All tested with curl
-- server.ts: 856 lines, 44KB
+COMPLETED: P2-AUTH-JWT (4m56s) + P2-AUTH-LOGIN (1m47s)
+- JWT middleware: authenticate, requireRole, requireAdmin
+- Login/Register/Refresh APIs
+- bcrypt + 24h JWT
+- Default admin user created
 
 ACTIVE:
-- P0-IMPL-SERVICES: 15 APIs (4h) - just started
-- P2-AUTH-JWT: 1h - in progress
-- P2-AUTH-LOGIN: 1h - just started
+- P0-IMPL-SERVICES: 15 APIs (4h) - in progress
+- P2-AUTH-PERMISSION: 1h - just started
 
-COMPLETED TODAY:
-- P1-FIX series: 12min vs 5h (96%)
-- P0-IMPL-CORE: 18min vs 6h (95%)
+TODAY COMPLETED:
+- P1-FIX: 12min vs 5h (96%)
+- P0-CORE: 18min vs 6h (95%)
+- P2-JWT+LOGIN: 7min vs 2h (94%)
