@@ -1,157 +1,121 @@
-# AI Government - Intelligent Agent Governance Framework
+# AI Government - Multi-Agent Governance Framework
 
-> A multi-project, multi-environment AI agent collaboration system based on Tang Dynasty's Three Departments and Six Ministries architecture.
+> An intelligent agent collaboration system based on Tang Dynasty's Three Departments and Six Ministries architecture, inspired by and compatible with OpenCrew.
 
-[中文](#中文说明) | [English](#english-description)
+---
+
+## Acknowledgment
+
+This project is deeply inspired by OpenCrew - an excellent multi-agent operating system for OpenClaw.
+
+### Inherited from OpenCrew
+- A2A Protocol: Agent-to-Agent collaboration patterns  
+- Subagent Templates: Standardized task delegation
+- Closeout Culture: Mandatory task completion documentation
+- Knowledge Pipeline: Three-layer knowledge system
+- CLI-First Principle: Every change must be locally verifiable
+
+### Extended Features
+- Tang Dynasty Architecture: Three Departments and Six Ministries
+- Multi-Project Support: N projects × M environments
+- Auto-Scheduling: Intelligent task scheduling when idle
+- Multi-Threading: Adaptive threading based on resources
+- Load Balancing: Distributed audit functions
+
+---
+
+## Architecture
+
+### Three Layers
+
+1. **Central**: Global management (PolicyDraft, PolicyReview, Execution, Six Ministries)
+2. **Regional**: Project level (Governor manages multiple environments)
+3. **Local**: Execution level (Local ministries per environment)
+
+### Agent Mapping (OpenCrew → AI Government)
+
+| OpenCrew | AI Government | Function | Slack |
+|----------|---------------|----------|-------|
+| main(CoS) | main(CoS) | User interface | #main |
+| cto | engineering | Development | #engineering |
+| builder | local-engineering | Local execution | project-channels |
+| research/ko | knowledge | Research & docs | #knowledge |
+| ops | operations | Operations | #operations |
+| — | policy-draft | Policy drafting | #policy |
+| — | policy-review | Policy review | #policy |
+| — | execution | Project management | #execution |
+| — | resources | Resources & cost | #resources |
+| — | security | Security & audit | #security |
+| — | people | Performance & training | #people |
+
+### Channel Sharing: Policy-Draft + Policy-Review
+
+Q: Will they conflict sharing #policy?
+A: No, they collaborate sequentially:
+- PolicyDraft creates draft (first)
+- PolicyReview validates (second)
+- Thread-based isolation prevents confusion
+
+Alternative: Use separate #policy-draft and #policy-review channels if preferred.
+
+---
+
+## Key Features
+
+### 1. Auto-Scheduling
+
+When no tasks for 30 minutes, Execution and Governors auto-assign pending tasks to idle agents.
+
+Config:
+{
+  "scheduling": {
+    "idleThreshold": "30m",
+    "executor": "execution",
+    "scope": ["central", "regional"]
+  }
+}
+
+### 2. Multi-Threading
+
+Adaptive thread count based on system resources:
+- minThreads: 2 (default)
+- maxThreads: min(CPU_cores × 2, 16)
+- auto-detect on startup
+
+Config:
+{
+  "agents": {
+    "engineering": {
+      "threads": { "min": 2, "max": 8, "adaptive": true }
+    }
+  }
+}
+
+### 3. Audit Distribution
+
+| Audit Type | Owner |
+|------------|-------|
+| Security | Security |
+| Quality | People |
+| Resource | Resources |
+| Process | Execution |
+
+Balances workload: 115 → 70-95人日 per agent
 
 ---
 
 ## Quick Start
 
-### Naming Convention (New!)
-
-We use **functional English names** that clearly describe what each agent does:
-
-| English ID | Name | Chinese | Function |
-|------------|------|---------|----------|
-| chief-steward | **Chief Steward** | 大内总管 | User interface |
-| policy-draft | **Policy Draft** | 中书省 | Policy drafting |
-| policy-review | **Policy Review** | 门下省 | Quality review |
-| execution | **Execution** | 尚书省 | Project management |
-| resources | **Resources** | 户部 | Resource & cost |
-| engineering | **Engineering** | 工部 | Development |
-| operations | **Operations** | 刑部 | System operations |
-| security | **Security** | 兵部 | Security & audit |
-| knowledge | **Knowledge** | 礼部 | Knowledge & research |
-| people | **People** | 吏部 | Performance & training |
-
-**Why these names?** See [Naming Convention](docs/NAMING_CONVENTION.md)
-
----
-
-## Architecture Overview
-
-```
-User
-  ↕
-Chief Steward (User Interface)
-  ↕
-Policy Draft (Draft policies) → Policy Review (Review policies)
-  ↕
-Execution (Project Management)
-  ↕
-Six Ministries
-├── Resources (Resource management)
-├── Engineering (Development)
-├── Operations (System ops)
-├── Security (Security & audit)
-├── Knowledge (Knowledge & research)
-└── People (Performance & training)
+```bash
+# Clone and deploy
+git clone https://github.com/your-org/ai-government.git
+cp -r ai-government/central/* ~/.openclaw/central/
+cp ai-government/config/openclaw.json ~/.openclaw/
+openclaw gateway restart
 ```
 
 ---
 
-## Core Features
+## License
 
-### Multi-Project × Multi-Environment
-
-Support N projects × M environments:
-- **Project Level**: Governor manages multiple environments per project
-- **Environment Level**: Local ministries execute in specific environment
-- **Flexible**: Any project can deploy to any environment
-
-### Two Communication Modes
-
-1. **Knowledge Base Mode** (Default): Decentralized, no external dependency
-2. **Slack Mode** (Compatible): Real-time, visual management
-3. **Hybrid Mode** (Recommended): Slack for central, knowledge base for execution
-
-See [Slack Compatibility](docs/SLACK_COMPATIBILITY.md)
-
----
-
-## Documentation
-
-- [Architecture Design](docs/ARCHITECTURE.md)
-- [Naming Convention](docs/NAMING_CONVENTION.md) ⭐ New!
-- [Slack Compatibility](docs/SLACK_COMPATIBILITY.md)
-- [Workload Simulation](docs/WORKLOAD_SIMULATION.md)
-- [OpenCrew Comparison](docs/COMPARISON.md)
-
----
-
-## Project Structure
-
-```
-aigovernment/
-├── central/                    # Central layer (global management)
-│   ├── chief-steward/         # User interface
-│   ├── policy-draft/          # Policy drafting
-│   ├── policy-review/         # Policy review
-│   ├── execution/             # Project management
-│   └── ministries/            # Six ministries
-│       ├── resources/         # Resource & cost
-│       ├── engineering/       # Development
-│       ├── operations/        # System operations
-│       ├── security/          # Security & audit
-│       ├── knowledge/         # Knowledge & research
-│       └── people/            # Performance & training
-│
-├── templates/                  # Templates for projects & environments
-│   ├── projects/              # Project templates
-│   └── regions/               # Environment templates
-│
-└── docs/                       # Documentation
-```
-
----
-
-##中文说明
-
-## 命名规范（新！）
-
-我们使用**职能导向的英文名称**，一看就知道是做什么的：
-
-| 英文ID | 英文名称 | 中文 | 核心职能 |
-|--------|----------|------|----------|
-| chief-steward | **Chief Steward** | 大内总管 | 用户接口 |
-| policy-draft | **Policy Draft** | 中书省 | 政策起草 |
-| policy-review | **Policy Review** | 门下省 | 质量审核 |
-| execution | **Execution** | 尚书省 | 项目管理 |
-| resources | **Resources** | 户部 | 资源成本 |
-| engineering | **Engineering** | 工部 | 技术开发 |
-| operations | **Operations** | 刑部 | 系统运维 |
-| security | **Security** | 兵部 | 安全审计 |
-| knowledge | **Knowledge** | 礼部 | 知识研究 |
-| people | **People** | 吏部 | 考核培训 |
-
-**为什么用这些名称？** 参见 [命名规范](docs/NAMING_CONVENTION.md)
-
----
-
-## 核心特性
-
-### 多项目 × 多环境
-
-支持 N项目 × M环境 灵活组合：
-- **项目层**：州牧管理每个项目的多个环境
-- **环境层**：地方六部在具体环境执行
-- **灵活**：任何项目可部署到任何环境
-
-### 两种沟通模式
-
-1. **知识库模式**（默认）：去中心化，不依赖外部服务
-2. **Slack模式**（兼容）：实时可视化
-3. **混合模式**（推荐）：中央Slack + 执行层知识库 + 地方GitHub
-
-参见 [Slack兼容方案](docs/SLACK_COMPATIBILITY.md)
-
----
-
-## 文档导航
-
-- [架构设计](docs/ARCHITECTURE.md)
-- [命名规范](docs/NAMING_CONVENTION.md) ⭐ 新！
-- [Slack兼容方案](docs/SLACK_COMPATIBILITY.md)
-- [工作量模拟](docs/WORKLOAD_SIMULATION.md)
-- [OpenCrew对比](docs/COMPARISON.md)
+MIT License - Acknowledgments to OpenCrew for the foundation.

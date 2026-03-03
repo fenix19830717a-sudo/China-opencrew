@@ -1,0 +1,160 @@
+{
+  "meta": {
+    "name": "AI Government",
+    "version": "1.0.0",
+    "basedOn": "OpenCrew"
+  },
+  
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "kimi-coding/k2p5",
+        "fallbacks": ["bailian-codeplan/qwen-coder-plus-latest"]
+      },
+      "threads": {
+        "min": 2,
+        "max": 8,
+        "adaptive": true
+      }
+    },
+    
+    "list": [
+      {
+        "id": "main",
+        "name": "Chief of Staff",
+        "workspace": "~/.openclaw/workspace-main",
+        "role": "User interface and command dispatch",
+        "threads": { "min": 2, "max": 4 }
+      },
+      {
+        "id": "policy-draft",
+        "name": "Policy Draft",
+        "workspace": "~/.openclaw/central/policy-draft",
+        "role": "Policy drafting and requirement clarification",
+        "subagents": { "allowAgents": ["policy-draft", "policy-review"] }
+      },
+      {
+        "id": "policy-review",
+        "name": "Policy Review", 
+        "workspace": "~/.openclaw/central/policy-review",
+        "role": "Policy review and quality control",
+        "subagents": { "allowAgents": ["policy-review"] }
+      },
+      {
+        "id": "execution",
+        "name": "Execution",
+        "workspace": "~/.openclaw/central/execution",
+        "role": "Project management and task distribution",
+        "subagents": { 
+          "allowAgents": [
+            "execution", "resources", "engineering", 
+            "operations", "security", "knowledge", "people"
+          ]
+        },
+        "scheduling": {
+          "enabled": true,
+          "idleThreshold": "30m",
+          "checkInterval": "5m"
+        }
+      },
+      {
+        "id": "resources",
+        "name": "Resources",
+        "workspace": "~/.openclaw/central/resources",
+        "role": "Resource management, cost control, and forecasting",
+        "threads": { "min": 2, "max": 4 }
+      },
+      {
+        "id": "engineering",
+        "name": "Engineering",
+        "workspace": "~/.openclaw/central/engineering",
+        "role": "Technical development and architecture",
+        "threads": { "min": 2, "max": 8 }
+      },
+      {
+        "id": "operations",
+        "name": "Operations",
+        "workspace": "~/.openclaw/central/operations",
+        "role": "System operations and monitoring",
+        "threads": { "min": 2, "max": 4 }
+      },
+      {
+        "id": "security",
+        "name": "Security",
+        "workspace": "~/.openclaw/central/security",
+        "role": "Security review and external operations",
+        "threads": { "min": 2, "max": 4 }
+      },
+      {
+        "id": "knowledge",
+        "name": "Knowledge",
+        "workspace": "~/.openclaw/central/knowledge",
+        "role": "Knowledge management and research",
+        "threads": { "min": 2, "max": 4 }
+      },
+      {
+        "id": "people",
+        "name": "People",
+        "workspace": "~/.openclaw/central/people",
+        "role": "Performance management and training",
+        "threads": { "min": 2, "max": 4 }
+      }
+    ]
+  },
+  
+  "bindings": [
+    { "agentId": "main", "match": { "channel": "slack", "peer": { "kind": "channel", "id": "MAIN_CHANNEL_ID" } } },
+    { "agentId": "policy-draft", "match": { "channel": "slack", "peer": { "kind": "channel", "id": "POLICY_CHANNEL_ID" } } },
+    { "agentId": "policy-review", "match": { "channel": "slack", "peer": { "kind": "channel", "id": "POLICY_CHANNEL_ID" } } },
+    { "agentId": "execution", "match": { "channel": "slack", "peer": { "kind": "channel", "id": "EXECUTION_CHANNEL_ID" } } },
+    { "agentId": "resources", "match": { "channel": "slack", "peer": { "kind": "channel", "id": "RESOURCES_CHANNEL_ID" } } },
+    { "agentId": "engineering", "match": { "channel": "slack", "peer": { "kind": "channel", "id": "ENGINEERING_CHANNEL_ID" } } },
+    { "agentId": "operations", "match": { "channel": "slack", "peer": { "kind": "channel", "id": "OPERATIONS_CHANNEL_ID" } } },
+    { "agentId": "security", "match": { "channel": "slack", "peer": { "kind": "channel", "id": "SECURITY_CHANNEL_ID" } } },
+    { "agentId": "knowledge", "match": { "channel": "slack", "peer": { "kind": "channel", "id": "KNOWLEDGE_CHANNEL_ID" } } },
+    { "agentId": "people", "match": { "channel": "slack", "peer": { "kind": "channel", "id": "PEOPLE_CHANNEL_ID" } } }
+  ],
+  
+  "channels": {
+    "slack": {
+      "enabled": true,
+      "botToken": "xoxb-YOUR-BOT-TOKEN",
+      "appToken": "xapp-YOUR-APP-TOKEN",
+      "replyToMode": "all",
+      "groupPolicy": "allowlist",
+      "channels": {
+        "MAIN_CHANNEL_ID": { "allow": true, "requireMention": false },
+        "POLICY_CHANNEL_ID": { "allow": true, "requireMention": false },
+        "EXECUTION_CHANNEL_ID": { "allow": true, "requireMention": false },
+        "RESOURCES_CHANNEL_ID": { "allow": true, "requireMention": false },
+        "ENGINEERING_CHANNEL_ID": { "allow": true, "requireMention": false },
+        "OPERATIONS_CHANNEL_ID": { "allow": true, "requireMention": false },
+        "SECURITY_CHANNEL_ID": { "allow": true, "requireMention": false },
+        "KNOWLEDGE_CHANNEL_ID": { "allow": true, "requireMention": false },
+        "PEOPLE_CHANNEL_ID": { "allow": true, "requireMention": false }
+      },
+      "thread": {
+        "historyScope": "thread",
+        "inheritParent": false
+      }
+    }
+  },
+  
+  "tools": {
+    "agentToAgent": {
+      "enabled": true,
+      "allow": ["main", "execution"]
+    },
+    "subagents": {
+      "tools": {
+        "deny": ["group:sessions"]
+      }
+    }
+  },
+  
+  "session": {
+    "agentToAgent": {
+      "maxPingPongTurns": 4
+    }
+  }
+}
